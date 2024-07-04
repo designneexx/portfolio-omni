@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { AuthApi, AuthLoginRequest, AuthSignupRequest } from 'src/api/auth/types';
 import { UserStore } from 'src/store/userStore';
 import { NotificationService } from './notificationService';
@@ -55,10 +56,18 @@ export class AuthService {
         } catch (err) {
             const error = err as Error;
 
-            this.notificationService.notifyAnError(
-                { title: 'Неправильное имя пользователя или пароль' },
-                error
-            );
+            if (err instanceof AxiosError) {
+                const { response } = err;
+                const message = response?.data?.message;
+
+                this.notificationService.notifyAnError({
+                    title: message || 'Неизвестная ошибка'
+                });
+            } else {
+                this.notificationService.notifyAnError({
+                    title: error?.message || 'Неизвестная ошибка'
+                });
+            }
 
             return false;
         }
@@ -76,10 +85,18 @@ export class AuthService {
         } catch (err) {
             const error = err as Error;
 
-            this.notificationService.notifyAnError(
-                { title: 'Неправильное имя пользователя или пароль' },
-                error
-            );
+            if (err instanceof AxiosError) {
+                const { response } = err;
+                const message = response?.data?.message;
+
+                this.notificationService.notifyAnError({
+                    title: message || 'Неизвестная ошибка'
+                });
+            } else {
+                this.notificationService.notifyAnError({
+                    title: error?.message || 'Неизвестная ошибка'
+                });
+            }
 
             return false;
         }
