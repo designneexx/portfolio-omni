@@ -20,17 +20,15 @@ export interface AuthLoginResponse {
     user: UserResponse;
 }
 
+export interface FEParameters {
+    module: string;
+    scope: string;
+    url: string;
+}
+
 export interface MFConfig {
-    feCreator: {
-        module: string;
-        scope: string;
-        url: string;
-    };
-    fePortfolio: {
-        module: string;
-        scope: string;
-        url: string;
-    };
+    feCreator: FEParameters;
+    fePortfolio: FEParameters;
 }
 
 export interface AuthApi {
@@ -39,5 +37,6 @@ export interface AuthApi {
         data: AuthLoginRequest,
         config?: AxiosRequestConfig
     ): Promise<AxiosResponse<AuthLoginResponse>>;
+    logout(config?: AxiosRequestConfig): Promise<AxiosResponse<unknown>>;
     register(data: AuthSignupRequest, config?: AxiosRequestConfig): Promise<AxiosResponse<unknown>>;
 }

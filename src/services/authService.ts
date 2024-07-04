@@ -9,6 +9,25 @@ export class AuthService {
         private readonly notificationService: NotificationService
     ) {}
 
+    async logout() {
+        try {
+            await this.api.logout();
+
+            this.userStore.clear();
+
+            return true;
+        } catch (err) {
+            const error = err as Error;
+
+            this.notificationService.notifyAnError(
+                { title: 'Не удалось выйти из приложения' },
+                error
+            );
+
+            return false;
+        }
+    }
+
     async getFeConfig() {
         try {
             const { data } = await this.api.getFEConfig();
@@ -31,6 +50,8 @@ export class AuthService {
             } = await this.api.login(data);
 
             this.userStore.setUserTokens(user, tokens);
+
+            return true;
         } catch (err) {
             const error = err as Error;
 
@@ -38,6 +59,8 @@ export class AuthService {
                 { title: 'Неправильное имя пользователя или пароль' },
                 error
             );
+
+            return false;
         }
     }
 

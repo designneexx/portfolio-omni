@@ -15,13 +15,15 @@ import {
 import { observer } from 'mobx-react-lite';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from 'src/assets/images/photo_2024-06-28_08-58-22.jpg';
+import { useAppServices } from 'src/hooks/useAppServices';
 import { useAppStores } from 'src/hooks/useAppStores';
 import { RoutePath } from 'src/types/common';
 
 function NavbarComponent() {
     const { userStore } = useAppStores();
+    const { authService } = useAppServices();
     const navigate = useNavigate();
-    const { clear, user } = userStore;
+    const { user } = userStore;
 
     const onLogin = () => {
         navigate(RoutePath.Login);
@@ -29,6 +31,14 @@ function NavbarComponent() {
 
     const onSignup = () => {
         navigate(RoutePath.Signup);
+    };
+
+    const onLogout = async () => {
+        const isSuccess = await authService.logout();
+
+        if (isSuccess) {
+            navigate('/login');
+        }
     };
 
     return (
@@ -42,7 +52,6 @@ function NavbarComponent() {
                         </Text>
                     </Flex>
                 </HStack>
-                <Link to='/resume/668350228f66a6a0766d520f'>sss</Link>
                 <Flex alignItems={'center'}>
                     {user ? (
                         <Menu>
@@ -52,15 +61,17 @@ function NavbarComponent() {
                                 minW={0}
                                 rounded={'full'}
                                 textDecoration='none'
-                                variant={'link'}
+                                variant='button'
                             >
                                 <Flex alignItems='center' as='span' gap={3}>
-                                    <Text as='strong'>{user.email}</Text>
+                                    <Text display={{ base: 'none', md: 'block' }}>
+                                        {user.email}
+                                    </Text>
                                     <Avatar name={user.email} size={'sm'} />
                                 </Flex>
                             </MenuButton>
-                            <MenuList>
-                                <MenuItem onClick={clear}>Выход</MenuItem>
+                            <MenuList zIndex={999}>
+                                <MenuItem onClick={onLogout}>Выход</MenuItem>
                             </MenuList>
                         </Menu>
                     ) : (

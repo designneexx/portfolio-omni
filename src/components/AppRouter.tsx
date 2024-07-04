@@ -7,7 +7,7 @@ import { NewPortfolioPage } from 'src/pages/NewPortfolioPage';
 import { PortfolioPage } from 'src/pages/PortfolioPage';
 import { SignupPage } from 'src/pages/SignupPage';
 import { RoutePath } from 'src/types/common';
-import { AuthPage } from '../pages/AuthPage';
+import { AuthPage } from '../pages/LoginPage';
 import { Auth } from './Auth';
 import { MainLayout } from './MainLayout';
 
@@ -32,11 +32,7 @@ function AppRouterComponent({ instance }: AppRouterComponentProps) {
                 {
                     children: [
                         {
-                            element: (
-                                <div>
-                                    <NewPortfolioPage />
-                                </div>
-                            ),
+                            element: <NewPortfolioPage />,
                             path: RoutePath.Home
                         }
                     ],

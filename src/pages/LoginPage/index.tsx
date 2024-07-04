@@ -13,9 +13,11 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { PasswordField } from 'src/components/form/PasswordField';
 import { useAppServices } from 'src/hooks/useAppServices';
 import { useConst } from 'src/hooks/useConst';
+import { RoutePath } from 'src/types/common';
 import { schema } from './consts';
 import { EForm, IForm } from './types';
 
@@ -24,6 +26,7 @@ export function AuthPage() {
         [EForm.Email]: '',
         [EForm.Password]: ''
     }));
+    const navigate = useNavigate();
     const {
         control,
         formState: { errors, isSubmitting, isValid },
@@ -36,7 +39,11 @@ export function AuthPage() {
     const { authService } = useAppServices();
 
     const onSubmit = async (data: IForm) => {
-        await authService.login(data);
+        const isSuccess = await authService.login(data);
+
+        if (isSuccess) {
+            navigate(RoutePath.Home);
+        }
     };
 
     return (

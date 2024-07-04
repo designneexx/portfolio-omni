@@ -13,6 +13,7 @@ function NewPortfolioPageComponent() {
     return (
         <LazyService
             data={{
+                feParameters: feConfig.fePortfolio,
                 notificationService,
                 userStore
             }}

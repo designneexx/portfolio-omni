@@ -52,7 +52,7 @@ export class UserStore {
         }
     };
 
-    setUserTokens = (user: UserResponse, tokens: Tokens) => {
+    setUserTokens = (user: null | UserResponse, tokens: Tokens) => {
         this.user = user;
         this.setAccessToken(tokens.accessToken);
         this.setRefreshToken(tokens.refreshToken);
